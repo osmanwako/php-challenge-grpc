@@ -1,0 +1,25 @@
+version: '3'
+services:
+  envoy:
+    image: envoyproxy/envoy:v1.21-latest
+    volumes:
+      - ./envoy.yaml:/etc/envoy/envoy.yaml
+    ports:
+      - "8080:8080"
+    depends_on:
+      - php-server
+      - react-app
+
+  php-server:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "50051:50051"
+
+  react-app:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
